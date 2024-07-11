@@ -35,3 +35,12 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Ignore jQuery
+src/main/resources/static/jquery-3.7.1.min/
+
+# Ignore FullCalendar folder
+src/main/resources/static/fullcalendar-5.11.0/
+
+# Ignore Bootstrap
+src/main/resources/static/bootstrap-5.3.3-dist/

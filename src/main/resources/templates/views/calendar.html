@@ -6,100 +6,10 @@
     <title>풀캘린더 페이지</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: #f2f2f2;
-            overflow: hidden; /* 스크롤바를 숨기기 위해 사용 */
-        }
-
-        .calendar-container {
-            display: flex;
-            height: 100vh;
-        }
-
-        .sidebar-left, .sidebar-right {
-            width: 0;
-            transition: width 0.3s;
-            overflow: hidden;
-            background-color: #ffffff;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            padding: 1rem;
-        }
-
-        .sidebar-left {
-            background-color: #1779BA;
-            color: white;
-        }
-
-        .sidebar-left:hover {
-            width: 200px;
-        }
-
-        .calendar {
-            flex-grow: 1;
-            height: 80%;
-            width: 80%;
-            margin: auto;
-            background: #fff;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
-
-        .sidebar-right.active {
-            width: 300px;
-        }
-
-        .sidebar-right {
-            position: relative;
-        }
-
-        .close-icon {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-        }
-
-        .event-detail {
-            display: none;
-        }
-
-        .event-detail.active {
-            display: block;
-        }
-
-        .sidebar-left h4,
-        .sidebar-left ul {
-            display: none;
-        }
-
-        .sidebar-left:hover h4,
-        .sidebar-left:hover ul {
-            display: block;
-        }
-    </style>
 </head>
 <body>
 <div class="calendar-container">
-    <div class="sidebar-left" id="sidebarLeft">
-        <h4>사용자 정보</h4>
-        <ul>
-            <li><a href="#">페이지 이동 1</a></li>
-            <li><a href="#">페이지 이동 2</a></li>
-        </ul>
-    </div>
     <div id="calendar" class="calendar"></div>
-    <div class="sidebar-right" id="sidebarRight">
-        <img src="/arbitrator/img/close-icon.png" alt="닫기" class="close-icon" id="closeIcon">
-        <h4>이벤트 리스트</h4>
-        <ul id="eventList"></ul>
-        <div class="event-detail" id="eventDetail">
-            <h4>이벤트 상세 정보</h4>
-            <p id="eventDescription"></p>
-        </div>
-    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -107,57 +17,39 @@
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        initializeCalendar();
+    });
+
+    function initializeCalendar() {
         var calendarEl = document.getElementById('calendar');
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
-            events: [
-                {
-                    title: '이벤트 1',
-                    start: '2024-07-10',
-                    description: '이벤트 1의 상세 설명입니다.'
-                },
-                {
-                    title: '이벤트 2',
-                    start: '2024-07-11',
-                    description: '이벤트 2의 상세 설명입니다.'
-                }
-            ],
+            events: getEvents(),
             dateClick: function (info) {
-                var sidebarRight = document.getElementById('sidebarRight');
-                var eventList = document.getElementById('eventList');
-                eventList.innerHTML = '';
-
-                calendar.getEvents().forEach(function (event) {
-                    if (event.startStr === info.dateStr) {
-                        var li = document.createElement('li');
-                        li.textContent = event.title;
-                        li.addEventListener('click', function () {
-                            document.getElementById('eventDetail').classList.add('active');
-                            document.getElementById('eventDescription').textContent = event.extendedProps.description;
-                            eventList.style.display = 'none';
-                        });
-                        eventList.appendChild(li);
-                    }
-                });
-
-                sidebarRight.classList.add('active');
+                console.log(info);
             }
         });
 
         calendar.render();
+    }
 
-        document.getElementById('sidebarLeft').addEventListener('mouseleave', function () {
-            this.style.width = '0';
-        });
-
-        document.getElementById('closeIcon').addEventListener('click', function () {
-            var sidebarRight = document.getElementById('sidebarRight');
-            sidebarRight.classList.remove('active');
-            document.getElementById('eventDetail').classList.remove('active');
-            document.getElementById('eventList').style.display = 'block';
-        });
-    });
+    function getEvents() {
+        return [
+            {
+                id: '1',
+                title: '이벤트 1',
+                start: '2024-07-10',
+                description: '이벤트 1의 상세 설명입니다.'
+            },
+            {
+                id: '2',
+                title: '이벤트 2',
+                start: '2024-07-11',
+                description: '이벤트 2의 상세 설명입니다.'
+            }
+        ];
+    }
 </script>
 </body>
 </html>

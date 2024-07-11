@@ -1,124 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Auth Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: #f2f2f2;
-        }
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Custom Auth Page</title>
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+        <link href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            body {
+                background: #f2f2f2;
+            }
 
-        .auth-wrapper {
-            width: 100%;
-            max-width: 400px;
-            padding: 2rem;
-            background: #ffffff;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
+            .auth-wrapper {
+                width: 100%;
+                max-width: 400px;
+                padding: 2rem;
+                background: #ffffff;
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+            }
 
-        .btn-primary {
-            background-color: #1779BA;
-            border: none;
-        }
+            .btn-primary {
+                background-color: #1779BA;
+                border: none;
+            }
 
-        .btn-primary:hover {
-            background-color: #125b8a;
-        }
-    </style>
-</head>
-<body>
-<div class="container d-flex justify-content-center align-items-center vh-100">
-    <div class="auth-wrapper">
-        <div id="login-wrapper">
-            <h2 class="text-center mb-4">로그인</h2>
-            <form id="loginForm">
-                <div class="mb-3">
-                    <label for="email" class="form-label">이메일</label>
-                    <input type="email" class="form-control" id="email" placeholder="이메일 입력">
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">비밀번호</label>
-                    <input type="password" class="form-control" id="password" placeholder="비밀번호 입력">
-                </div>
-                <button type="submit" class="btn btn-primary w-100">로그인</button>
-                <div class="text-center mt-3">
-                    <a href="#" id="showRegister">회원가입</a>
-                </div>
-            </form>
-        </div>
-        <div id="register-wrapper" class="d-none">
-            <h2 class="text-center mb-4">회원가입</h2>
-            <form id="registerForm">
-                <div class="mb-3">
-                    <label for="name" class="form-label">이름</label>
-                    <input type="text" class="form-control" id="name" placeholder="이름 입력">
-                </div>
+            .btn-primary:hover {
+                background-color: #125b8a;
+            }
+
+            .error-message {
+                color: red;
+                display: none;
+            }
+
+            .auth-links {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 1rem;
+            }
+
+            .auth-links a {
+                text-decoration: none;
+                color: #1779BA;
+            }
+
+            .auth-links a:hover {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container d-flex justify-content-center align-items-center vh-100">
+            <div class="auth-wrapper">
+                <h2 class="text-center mb-4">로그인</h2>
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}" id="csrfToken">
                 <div class="mb-3">
                     <label for="email-prefix" class="form-label">이메일</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" id="email-prefix" placeholder="이메일 아이디 입력">
-                        <span class="input-group-text">@example.com</span>
+                        <input type="text" class="form-control" id="email-prefix" placeholder="이메일 아이디 입력" required>
+                        <span class="input-group-text" id="login-email-suffix"
+                              th:text="${emailSuffix}">@example.com</span>
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="register-password" class="form-label">비밀번호</label>
-                    <input type="password" class="form-control" id="register-password" placeholder="비밀번호 입력">
+                    <label for="password" class="form-label">비밀번호</label>
+                    <input type="password" class="form-control" id="password" placeholder="비밀번호 입력" required>
                 </div>
-                <div class="mb-3">
-                    <label for="confirm-password" class="form-label">비밀번호 확인</label>
-                    <input type="password" class="form-control" id="confirm-password" placeholder="비밀번호 확인">
+                <div class="error-message mb-3" id="error-message">로그인 실패: 이메일 또는 비밀번호를 확인하세요.</div>
+                <button type="button" class="btn btn-primary w-100" id="loginButton">로그인</button>
+                <div class="auth-links">
+                    <a href="/forgot-password" th:href="@{/forgot-password}">비밀번호 찾기</a>
+                    <a href="/register" th:href="@{/register}">회원가입</a>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">회원가입</button>
-                <div class="text-center mt-3">
-                    <a href="#" id="showLogin">로그인</a>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
-</div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#loginForm').on('submit', function(event) {
-            event.preventDefault();
-            var email = $('#email').val();
-            var password = $('#password').val();
-            // 여기에 로그인 로직을 추가하세요.
-            alert('로그인 시도: ' + email + ' / ' + password);
-        });
+        <script th:inline="javascript">
+            var csrfToken = /*[[${_csrf.token}]]*/ '';
+            var csrfHeader = /*[[${_csrf.headerName}]]*/ '';
+        </script>
 
-        $('#registerForm').on('submit', function(event) {
-            event.preventDefault();
-            var name = $('#name').val();
-            var emailPrefix = $('#email-prefix').val();
-            var email = emailPrefix + '@example.com';
-            var password = $('#register-password').val();
-            var confirmPassword = $('#confirm-password').val();
-            // 여기에 회원가입 로직을 추가하세요.
-            if (password === confirmPassword) {
-                alert('회원가입 시도: ' + name + ' / ' + email + ' / ' + password);
-            } else {
-                alert('비밀번호가 일치하지 않습니다.');
-            }
-        });
-
-        $('#showRegister').on('click', function(event) {
-            event.preventDefault();
-            $('#login-wrapper').addClass('d-none');
-            $('#register-wrapper').removeClass('d-none');
-        });
-
-        $('#showLogin').on('click', function(event) {
-            event.preventDefault();
-            $('#register-wrapper').addClass('d-none');
-            $('#login-wrapper').removeClass('d-none');
-        });
-    });
-</script>
-</body>
+        <script src="/jquery-3.7.1.min/jquery-3.7.1.min.js"></script>
+        <script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/arbitrator/js/common.js"></script> <!-- common.js 스크립트를 추가 -->
+        <script src="/arbitrator/js/login.js" type="text/javascript"></script>
+    </body>
 </html>
