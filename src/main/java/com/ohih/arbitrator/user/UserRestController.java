@@ -2,7 +2,7 @@ package com.ohih.arbitrator.user;
 
 import com.ohih.arbitrator.constant.UrlConstant;
 import com.ohih.arbitrator.user.dto.RegisterDto;
-import com.ohih.arbitrator.user.dto.RegisterResultDto;
+import com.ohih.arbitrator.user.dto.ResultDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +14,7 @@ public class UserRestController {
     private final UserService userService;
 
     @PostMapping(UrlConstant.PERFORM_REGISTER)
-    public RegisterResultDto register(@RequestBody RegisterDto registerDto) {
+    public ResultDto register(@RequestBody RegisterDto registerDto) {
         return userService.register(registerDto);
     }
 }

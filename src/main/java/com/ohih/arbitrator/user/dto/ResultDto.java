@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class RegisterResultDto {
+public class ResultDto {
     private boolean success;
     private List<Integer> responseCodes;
     private String redirectUrl;

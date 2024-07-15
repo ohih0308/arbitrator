@@ -3,16 +3,46 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
         <title>회원가입 페이지</title>
         <link href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            body {
+                background-color: #f2f2f2;
+            }
+
+            .back-icon {
+                cursor: pointer;
+                width: 24px;
+                height: 24px;
+            }
+
+            .card {
+                max-width: 400px;
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .form-label {
+                font-weight: bold;
+            }
+
+            .btn-primary {
+                background-color: #1779BA;
+                border: none;
+            }
+
+            .btn-primary:hover {
+                background-color: #125b8a;
+            }
+        </style>
     </head>
-    <body class="bg-light">
+    <body>
         <div class="container d-flex justify-content-center align-items-center vh-100">
-            <div class="card shadow-sm p-4" style="max-width: 400px;">
+            <div class="card shadow-sm p-4">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
-                        <img src="arbitrator/img/left-arrow.png" alt="뒤로가기" class="back-icon" id="backIcon"
-                             style="width: 24px; height: 24px; cursor: pointer;">
+                        <img src="arbitrator/img/left-arrow.png" alt="뒤로가기" class="back-icon" id="backIcon">
                         <h2 class="flex-grow-1 text-center m-0">회원가입</h2>
                     </div>
                     <form id="registerForm" th:action="@{/register}" method="post">
@@ -24,9 +54,8 @@
                         <div class="mb-3">
                             <label for="email-prefix" class="form-label">이메일</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="email-prefix" placeholder="이메일 아이디 입력"
-                                       required>
-                                <span class="input-group-text" id="email-suffix"
+                                <input type="text" class="form-control" id="email-prefix" placeholder="이메일 입력" required>
+                                <span class="input-group-text" id="login-email-suffix"
                                       th:text="${emailSuffix}">@example.com</span>
                             </div>
                         </div>
@@ -51,8 +80,9 @@
             var csrfToken = /*[[${_csrf.token}]]*/ '';
         </script>
 
-        <script src="/jquery-3.7.1.min/jquery-3.7.1.min.js" type="text/javascript"></script>
-        <script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.js"></script>
+        <script src="/jquery-3.7.1.min/jquery-3.7.1.min.js"></script>
+        <script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/arbitrator/js/common.js" type="text/javascript">s</script>
         <script src="/arbitrator/js/register.js" type="text/javascript"></script>
     </body>
 </html>

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ohih.arbitrator.constant.ResponseCode;
 import com.ohih.arbitrator.constant.UrlConstant;
 import com.ohih.arbitrator.user.dto.LoginResultDto;
+import com.ohih.arbitrator.user.dto.ResultDto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -5,10 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
-@org.springframework.stereotype.Service
+@Service
 @RequiredArgsConstructor
-public class UserDetailServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserService userService;
 
     @Override
@@ -17,9 +18,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if (userDetails == null) {
             throw new UsernameNotFoundException(email);
         }
-        return org.springframework.security.core.userdetails.User.withUsername(userDetails.getEmail())
-                .password(userDetails.getPassword())
-                .authorities(userDetails.getAuthorities())
-                .build();
+        return userDetails; // UserDetailsImpl 객체를 그대로 반환합니다.
     }
 }

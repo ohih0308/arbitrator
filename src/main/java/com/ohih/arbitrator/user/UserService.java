@@ -4,7 +4,7 @@ import com.ohih.arbitrator.constant.ResponseCode;
 import com.ohih.arbitrator.constant.UrlConstant;
 import com.ohih.arbitrator.security.UserDetailsImpl;
 import com.ohih.arbitrator.user.dto.RegisterDto;
-import com.ohih.arbitrator.user.dto.RegisterResultDto;
+import com.ohih.arbitrator.user.dto.ResultDto;
 import com.ohih.arbitrator.user.validation.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,30 +27,30 @@ public class UserService {
         return mapper.isEmailDuplicate(email);
     }
 
-    public RegisterResultDto register(RegisterDto registerDto) {
-        RegisterResultDto registerResultDto = new RegisterResultDto();
+    public ResultDto register(RegisterDto registerDto) {
+        ResultDto resultDto = new ResultDto();
         List<Integer> responseCodes = userValidator.validateRegisterDto(registerDto);
 
         if (!responseCodes.isEmpty()) {
-            registerResultDto.setSuccess(false);
-            registerResultDto.setResponseCodes(responseCodes);
-            return registerResultDto;
+            resultDto.setSuccess(false);
+            resultDto.setResponseCodes(responseCodes);
+            return resultDto;
         }
 
         if (isEmailDuplicated(registerDto.getEmail()) > 0) {
             responseCodes.add(ResponseCode.EMAIL_DUPLICATION_ERROR);
-            registerResultDto.setSuccess(false);
-            registerResultDto.setResponseCodes(responseCodes);
-            return registerResultDto;
+            resultDto.setSuccess(false);
+            resultDto.setResponseCodes(responseCodes);
+            return resultDto;
         }
 
         registerDto.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         mapper.register(registerDto);
 
-        registerResultDto.setSuccess(true);
-        registerResultDto.setRedirectUrl(UrlConstant.LOGIN);
+        resultDto.setSuccess(true);
+        resultDto.setRedirectUrl(UrlConstant.LOGIN);
         responseCodes.add(ResponseCode.REGISTER_SUCCESS);
-        registerResultDto.setResponseCodes(responseCodes);
-        return registerResultDto;
+        resultDto.setResponseCodes(responseCodes);
+        return resultDto;
     }
 }

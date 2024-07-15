@@ -1,3 +1,5 @@
+// login.js
+
 $(document).ready(function () {
     setupEventHandlers();
 });
@@ -14,13 +16,16 @@ function login() {
     var email = emailPrefix + $('#login-email-suffix').text();
     var password = $('#password').val();
 
+    // CSRF 토큰과 헤더 가져오기
+    const {token, header} = getCsrfTokenAndHeader();
+
     $.ajax({
         url: '/process-login',
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({email: email, password: password}),
         beforeSend: function (xhr) {
-            xhr.setRequestHeader(csrfHeader, csrfToken); // CSRF 토큰을 헤더에 추가
+            xhr.setRequestHeader(header, token); // CSRF 토큰을 헤더에 추가
         },
         success: function (response) {
             handleLoginResponse(response);

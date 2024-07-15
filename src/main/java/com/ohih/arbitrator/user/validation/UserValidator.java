@@ -2,8 +2,8 @@ package com.ohih.arbitrator.user.validation;
 
 import com.ohih.arbitrator.constant.ResponseCode;
 import com.ohih.arbitrator.constant.WebConstant;
-import com.ohih.arbitrator.user.dto.RegisterDto;
 import com.ohih.arbitrator.user.dto.LoginDto;
+import com.ohih.arbitrator.user.dto.RegisterDto;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -30,13 +30,13 @@ public class UserValidator {
         return errorCodes;
     }
 
-    public List<Integer> validateLoginDto(LoginDto loginDto) {
+    public List<Integer> validateLoginInput(String email, String password) {
         List<Integer> errorCodes = new ArrayList<>();
 
-        if (!validateEmail(loginDto.getEmail())) {
+        if (!validateEmail(email)) {
             errorCodes.add(ResponseCode.EMAIL_VALIDATION_ERROR);
         }
-        if (!validatePassword(loginDto.getPassword())) {
+        if (!validatePassword(password)) {
             errorCodes.add(ResponseCode.PASSWORD_VALIDATION_ERROR);
         }
 
